@@ -27,25 +27,20 @@ public class TipoUsuarioController {
         return ResponseEntity.status(HttpStatus.OK).body(tipoUsuarioRepository.findAll());
     }
 
-    @PostMapping (consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<Object> cadastrarUsuario(@ModelAttribute @Valid TipoUsuarioDto tipoUsuarioDto){
-        if (tipoUsuarioRepository.findByNome(tipoUsuarioDto.nome()) != null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Esse nome ja esta cadastrado");
+    @PostMapping
+    public ResponseEntity<Object> cadastrarTipoUsuario(@RequestBody @Valid TipoUsuarioDto tipoUsuarioDto){
+        if (tipoUsuarioRepository.findByTipo(tipoUsuarioDto.tipo()) != null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Esse tipo ja esta cadastrado");
         }
 
-        TipoUsuarioModel usuario = new TipoUsuarioModel();
-        BeanUtils.copyProperties(TipoUsuarioDto, usuario);
+        TipoUsuarioModel tipo = new TipoUsuarioModel();
 
-        String urlImagem;
+        BeanUtils.copyProperties(tipoUsuarioDto, tipo);
 
-        try {
-            urlImagem = fileUploadService.FazerUpload(tipoUsuarioDto.imagem());
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-        usuario.setUrl_img(urlImagem);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(TipoUsuarioRepository.save(usuario));
+
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(tipoUsuarioRepository.save(tipo));
 
     }
 

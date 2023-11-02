@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface TipoUsuarioRepository extends JpaRepository<TipoUsuarioModel, UUID> {
 
     Optional<TipoUsuarioModel> findById(UUID id);
-    TipoUsuarioModel findByNome(String nome);
+    TipoUsuarioModel findByTipo(String tipo);
 
 }
